@@ -3,7 +3,6 @@ import { expect } from '@playwright/test';
 export class CustomersListPage {
   constructor(page) {
     this.page = page;
-    this.deleteButton = page.getByRole('button', { name: 'Delete' }).last();
     this.searchCustomerField = page.getByPlaceholder('Search Customer');
   }
 
@@ -34,8 +33,10 @@ export class CustomersListPage {
     await expect(this.getCustomerRow(firstName, lastName, postCode).locator('td').nth(3)).toBeEmpty();
   }
 
-  async clickDeleteCustomerButton() {
-    await this.deleteButton.click();
+  async clickDeleteCustomerButton(firstName, lastName, postCode) {
+    await this.getCustomerRow(firstName, lastName, postCode)
+      .getByRole('button', { name: 'Delete' })
+      .click();
   }
 
   async reload() {
